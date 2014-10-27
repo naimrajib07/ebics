@@ -2,13 +2,15 @@ require 'minitest/autorun'
 require 'nokogiri'
 require_relative '../lib/ebics'
 
-class SchemaTest < Minitest::Test
+# TODO: Need to refactor ever test cases.
+
+class SchemaTest < MiniTest::Unit::TestCase
   def setup
     @bank = EBICS::Bank.new
     @bank.host_id = 'EBIXH'
 
     @user = EBICS::User.new do |key|
-      path = 'keys/' + key.type + '.pem'
+      path = '../keys/' + key.type + '.pem'
       if File.exists?(path)
         key.rsa = OpenSSL::PKey::RSA.new(File.read(path))
       else

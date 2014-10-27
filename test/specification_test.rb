@@ -1,10 +1,10 @@
 require 'minitest/autorun'
 require_relative '../lib/ebics'
 
-class SchemaTest < Minitest::Test
+class SchemaTest < MiniTest::Unit::TestCase
   def setup
     @user = EBICS::User.new do |key|
-      key.rsa = OpenSSL::X509::Certificate.new File.read('keys/example.cer')
+      key.rsa = OpenSSL::X509::Certificate.new File.read('../keys/example.cer')
     end
 
     @example_key = @user.key('example')
