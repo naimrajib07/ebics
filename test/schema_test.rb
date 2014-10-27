@@ -40,7 +40,7 @@ class SchemaTest < MiniTest::Unit::TestCase
     doc = Nokogiri::XML(@ini.render.to_s.tap {|ini| puts ini })
 
 
-    Dir.chdir('xsd') do
+    Dir.chdir('../xsd') do
       xsd = Nokogiri::XML::Schema(File.read('ebics_H004.xsd'))
       errors = []
       xsd.validate(doc).each do |error|
@@ -69,7 +69,7 @@ class SchemaTest < MiniTest::Unit::TestCase
     doc = Nokogiri::XML(@hia.render.to_s.tap {|hia| puts hia })
 
 
-    Dir.chdir('xsd') do
+    Dir.chdir('../xsd') do
       xsd = Nokogiri::XML::Schema(File.read('ebics_H004.xsd'))
       errors = []
       xsd.validate(doc).each do |error|
@@ -83,7 +83,7 @@ class SchemaTest < MiniTest::Unit::TestCase
     doc = Nokogiri::XML(@hia.raw_order_data('HIA_order_data.xml').to_s.tap {|hia| puts hia })
 
 
-    Dir.chdir('xsd') do
+    Dir.chdir('../xsd') do
       xsd = Nokogiri::XML::Schema(File.read('ebics_H004.xsd'))
       errors = []
       xsd.validate(doc).each do |error|
