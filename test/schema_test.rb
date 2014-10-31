@@ -2,7 +2,7 @@ require 'minitest/autorun'
 require 'nokogiri'
 require_relative '../lib/ebics'
 
-# TODO: Need to refactor ever test cases.
+# TODO: Need to refactor every test cases.
 
 class SchemaTest < MiniTest::Unit::TestCase
   def setup
@@ -36,25 +36,23 @@ class SchemaTest < MiniTest::Unit::TestCase
 
   end
 
-   def test_ini_schema
-    doc = Nokogiri::XML(@ini.render.to_s.tap {|ini| puts ini })
+  def test_ini_schema
+    doc = Nokogiri::XML(@ini.render.to_s.tap { |ini| ini })
 
-
-    Dir.chdir('../xsd') do
-      xsd = Nokogiri::XML::Schema(File.read('ebics_H004.xsd'))
+    Dir.chdir('../xsd/H003/') do
+      xsd = Nokogiri::XML::Schema(File.read('ebics.xsd'))
       errors = []
       xsd.validate(doc).each do |error|
         errors << error
       end
       assert_empty errors, errors.join("\n")
     end
-   end
+  end
 
   def test_ini_order_data_schema
-    doc = Nokogiri::XML(@ini.raw_order_data('INI_order_data.xml').to_s.tap {|ini| puts ini })
+    doc = Nokogiri::XML(@ini.raw_order_data('INI_order_data.xml').to_s.tap { |ini| puts ini })
 
-
-    Dir.chdir('xsd') do
+    Dir.chdir('../xsd/H003/') do
       xsd = Nokogiri::XML::Schema(File.read('ebics_signature.xsd'))
       errors = []
       xsd.validate(doc).each do |error|
@@ -66,11 +64,10 @@ class SchemaTest < MiniTest::Unit::TestCase
 
 
   def test_hia_schema
-    doc = Nokogiri::XML(@hia.render.to_s.tap {|hia| puts hia })
+    doc = Nokogiri::XML(@hia.render.to_s.tap { |hia| puts hia })
 
-
-    Dir.chdir('../xsd') do
-      xsd = Nokogiri::XML::Schema(File.read('ebics_H004.xsd'))
+    Dir.chdir('../xsd/H003/') do
+      xsd = Nokogiri::XML::Schema(File.read('ebics.xsd'))
       errors = []
       xsd.validate(doc).each do |error|
         errors << error
@@ -80,11 +77,10 @@ class SchemaTest < MiniTest::Unit::TestCase
   end
 
   def test_hia_order_data_schema
-    doc = Nokogiri::XML(@hia.raw_order_data('HIA_order_data.xml').to_s.tap {|hia| puts hia })
+    doc = Nokogiri::XML(@hia.raw_order_data('HIA_order_data.xml').to_s.tap { |hia| puts hia })
 
-
-    Dir.chdir('../xsd') do
-      xsd = Nokogiri::XML::Schema(File.read('ebics_H004.xsd'))
+    Dir.chdir('../xsd/H003/') do
+      xsd = Nokogiri::XML::Schema(File.read('ebics.xsd'))
       errors = []
       xsd.validate(doc).each do |error|
         errors << error
