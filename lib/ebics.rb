@@ -20,6 +20,14 @@ module EBICS
       raw = File.read(File.join(File.dirname(__FILE__), '../templates/' + name + '.erb'))
       ERB.new(raw).result(binding)
     end
+
+    def self.nonce
+      SecureRandom.hex(16)
+    end
+
+    def self.time_stamp
+      Time.now.utc.iso8601
+    end
   end
 
   class HEV < Request
@@ -48,6 +56,35 @@ module EBICS
     end
   end
 
+  class STA < Request
+
+    attr_accessor :from, :to, :keys, :pass_phrase, :url, :HostID, :UserID, :PartnerID
+
+    # expect a hash with following key
+    # keys, pass_phrase, url, host, user, partner
+    # {keys: File.open('some'), pass_phrase: 'secret', url: 'https://194.180.18.30/ebicsweb/ebicsweb',
+    # host_id: 'SIZBN001', user_id: 'EBIX', partner_id: 'EBICS'}
+
+    def initialize request_hash
+        @keys = request_hash['keys']
+        @pass_phrase = request_hash['pass_phrase']
+        @url = request_hash['url']
+        @HostID = request_hash['host_id']
+        @UserID = request_hash['user_id']
+        @PartnerID = request_hash['partner_id']
+    end
+
+    def request from, to
+      @from = from
+      @to = to
+
+      render
+    end
+
+    def render
+      request_template('STA.xml')
+    end
+  end
 
   class User
     attr_accessor :partner_id
